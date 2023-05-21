@@ -1,4 +1,5 @@
-const User = require("../models/User");
+const userHelpers = require('../helpers/user.helpers')
+const bcrypt = require("bcryptjs");
 
 class ValidationError extends Error {
   constructor(message) {
@@ -6,16 +7,32 @@ class ValidationError extends Error {
     this.name = "ValidationError"
   }
 }
-async function userExists(username, phoneNumber, email) {
-  let candidate = await User.findOne({ username })
+
+const validateRegister = async (username, surname, name, lastName, phoneNumber, email) => {
+  await userExists(username, phoneNumber, email)
+  await checkData(surname, name, lastName, phoneNumber, email)
+}
+
+const validateLogin = async (username, password) => {
+  const user = await userHelpers.getUserByUsername(username)
+  if (!user) {
+    throw new ValidationError('Пользователь не найден')
+  }
+  const isMatch = await bcrypt.compare(password, user.password)
+  if (!isMatch) {
+    throw new ValidationError('Неверный пароль, попробуйте снова')
+  }
+}
+const userExists = async (username, phoneNumber, email) => {
+  let candidate = await userHelpers.getUserByUsername(username)
   if (candidate)
     throw new ValidationError("Данный логин занят")
 
-  candidate = await User.findOne({ email })
+  candidate = await userHelpers.getUserByEmail(email)
   if (candidate)
     throw new ValidationError("Данная почта занята")
 
-  candidate = await User.findOne({ phoneNumber })
+  candidate = await userHelpers.getUserByPhoneNumber(phoneNumber)
   if (candidate)
     throw new ValidationError("Данный номер телефона занят")
 }
@@ -38,5 +55,5 @@ async function checkData(surname, name, lastName, phoneNumber, email) {
 }
 
 module.exports = {
-  ValidationError, userExists, checkData
+  ValidationError, validateRegister, validateLogin
 }

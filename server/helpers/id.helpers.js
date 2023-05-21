@@ -1,4 +1,5 @@
-const Id = require('../models/Id');
+const Id = require('../models/Id')
+
 async function getUserId() {
   const id = await Id.findOne()
   const user_id = id.user_id

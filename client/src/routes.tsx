@@ -10,6 +10,8 @@ import TeamPage from "./pages/TeamPage";
 import CreateTask from "./pages/CreateTask";
 import TaskPage from "./pages/TaskPage";
 import CreateSubtask from "./pages/CreateSubtask";
+import AddExecutor from "./pages/AddExecutor";
+import Notifications from "./pages/Notifications";
 
 export const useRoutes = (logged: boolean) => {
   if (logged) {
@@ -31,8 +33,10 @@ export const useRoutes = (logged: boolean) => {
             <Route index element={<Teams/>}/>
             <Route path=":id" element={<TaskPage />}/>
             <Route path=":id/subtasks/create" element={<CreateSubtask />}/>
+            <Route path=":id/add-executor" element={<AddExecutor />}/>
           </Route>
 
+          <Route path="/notifications" element={<Notifications/>}/>
           <Route path="*" element={<NoPage/>}/>
         </Route>
       </Routes>

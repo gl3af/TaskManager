@@ -13,10 +13,11 @@ app.use('/api', require('./routes/auth.routes'))
 app.use('/api/users', require('./routes/users.routes'))
 app.use('/api/teams', require('./routes/teams.routes'))
 app.use('/api/tasks', require('./routes/tasks.routes'))
+app.use('/api/notifications', require('./routes/notifications.routes'))
 
 const PORT = config.get('port')
 
-if (config.get('port') === 'production') {
+if (config.get('type') === 'production') {
   app.use('/', express.static(path.join(__dirname, '../client', 'build')))
 
   app.get('*', (req, res) => {

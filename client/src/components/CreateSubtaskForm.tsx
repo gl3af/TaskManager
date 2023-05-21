@@ -7,14 +7,14 @@ interface CreateSubtaskProps {
 }
 
 function CreateSubtaskForm({ refs, createHandler }: CreateSubtaskProps) {
-  const [inputs] = useState([
+  const inputs = [
     {id: "name", type: "text", name: "Название"},
     {id: "description", type: "text", name: "Описание"},
     {id: "deadline", type: "date", name: "Срок выполнения"}
-  ])
+  ]
 
   return (
-    <form className="bg-gray-700 shadow-md rounded-xl px-8 py-6">
+    <form className="bg-gray-800 shadow-md rounded-xl px-8 py-6">
       { inputs.map(item =>
         <InputField key={item.id} id={item.id} type={item.type} name={item.name} refs={refs}/>)
       }

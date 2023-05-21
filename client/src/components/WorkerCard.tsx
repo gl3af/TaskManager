@@ -11,18 +11,23 @@ interface WorkerCardProps {
 
 function WorkerCard({ surname, name, lastname, email, phoneNumber }: WorkerCardProps) {
   return (
-    <div className="w-[45%] p-6 border rounded-lg shadow-xl bg-gray-800 border-gray-700 mx-auto mt-6">
-      <h5 className="mb-2 text-xl font-bold tracking-tight text-white">
+    <div className="w-4/5 px-4 rounded-lg bg-gray-800 pt-1">
+      <h5 className="mb-2 text-xl font-semibold tracking-tight text-white">
         {[surname, name, lastname].join(' ')}
       </h5>
       <div className="flex">
-        <img src={mail} className="mt-1.5 w-4 h-3.5" alt=""/>
+        <img
+          src={mail}
+          className="mt-1.5 w-4 h-3.5" alt="Иконка"/>
         <p className="pl-2 font-normal text-md text-gray-700 dark:text-gray-400">
           <a href={"mailto:" + email}>{email}</a>
         </p>
       </div>
       <div className="flex">
-        <img src={phone} className="mt-1.5 w-3.5 h-3.5" alt=""/>
+        <img
+          src={phone}
+          className="mt-1.5 w-3.5 h-3.5"
+          alt="Иконка"/>
         <p className="pl-2 font-normal text-md text-gray-700 dark:text-gray-400">
           <a href={"tel:" + phoneNumber}>{phoneNumber}</a>
         </p>

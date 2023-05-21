@@ -6,6 +6,7 @@ import useHttp from "../hooks/http.hook"
 import Loader from "../components/Loader"
 import WorkerCard from "../components/WorkerCard"
 import TaskCard from "../components/TaskCard";
+import FieldSet from "../components/FieldSet";
 
 function TeamPage() {
   const { id } = useParams()
@@ -26,11 +27,9 @@ function TeamPage() {
       setWorkers(workers)
       const tasks = await request(`/api/teams/${team_id}/tasks`, 'GET', {})
       setTasks(tasks)
-      console.log(tasks)
     }
 
-    fetchData().catch(err => {
-    })
+    fetchData().catch(err => {})
 
     return setWorkers([])
   }, [id, request])
@@ -40,33 +39,42 @@ function TeamPage() {
   }
 
   return (
-    <div className="pt-20 bg-gray-600">
-      {auth.type === 2 && <AddNewButton link="tasks/create"/>}
-      <h1 className="text-center text-white font-semibold pt-2 text-3xl">{name}</h1>
-      <p className="text-center text-white pt-2 text-xl max-w-md mx-auto">{description}</p>
-      <h1 className="text-center text-white font-semibold pt-2 text-2xl">Сотрудники</h1>
-      <div className="flex flex-col max-w-6xl mx-auto">
-        {workers !== null && workers.map((worker: any) =>
-          <WorkerCard
-            key={worker.id}
-            surname={worker.surname}
-            name={worker.name}
-            lastname={worker.lastName}
-            email={worker.email}
-            phoneNumber={worker.phoneNumber}
-          />
-        )}
-      </div>
-      <h1 className="text-center text-white font-semibold pt-2 text-2xl">Поручения</h1>
-      <div className="flex flex-col max-w-6xl mx-auto">
-        {tasks !== null && tasks.map((task: any) =>
-          <TaskCard
-            key={task.id}
-            id={task.id}
-            name={task.name}
-            deadline={new Date(task.deadline)}
-          />
-        )}
+    <div className="pt-20 bg-gray-700">
+      <h1 className="text-center text-white text-3xl pb-3 font-semibold">
+        Информация о команде '{name}'
+      </h1>
+      <div className="bg-gray-800 max-w-xl mx-auto rounded-xl border shadow-xl">
+        {auth.type === 2 && <AddNewButton link="tasks/create"/>}
+        <FieldSet text={name}>
+          <p className="text-white px-4 pt-0 text-xl">{description}</p>
+        </FieldSet>
+        <FieldSet text={"Сотрудники"}>
+          <div className="flex flex-col mx-auto">
+            {workers !== null && workers.map((worker: any) =>
+              <WorkerCard
+                key={worker.id}
+                surname={worker.surname}
+                name={worker.name}
+                lastname={worker.lastName}
+                email={worker.email}
+                phoneNumber={worker.phoneNumber}
+              />
+            )}
+          </div>
+        </FieldSet>
+        {tasks !== null && <FieldSet text={"Поручения"}>
+          <div className="flex flex-col max-w-6xl mx-auto">
+            {tasks.map((task: any) =>
+              <TaskCard
+                key={task.id}
+                id={task.id}
+                name={task.name}
+                deadline={new Date(task.deadline)}
+                status={task.status}
+              />
+            )}
+          </div>
+        </FieldSet>}
       </div>
     </div>
   )

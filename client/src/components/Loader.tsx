@@ -10,7 +10,7 @@ function Loader() {
             className="relative transform overflow-hidden rounded-lg bg-transparent text-left transition-all sm:my-8 sm:w-full sm:max-w-lg">
             <div className="bg-transparent px-4 pb-4 pt-5 sm:p-6 sm:pb-4 flex justify-center">
               <svg aria-hidden="true"
-                   className="inline w-52 h-52 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                   className="inline w-48 h-48 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
                    viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051

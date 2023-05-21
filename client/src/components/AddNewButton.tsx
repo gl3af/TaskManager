@@ -9,7 +9,7 @@ interface AddNewButtonProps {
 function AddNewButton( {link} : AddNewButtonProps) {
   return (
     <button
-      className="fixed top-[90px] right-4 w-[40px] h-[40px] bg-green-500 border rounded-3xl border-green-500"
+      className="fixed top-24 right-4 w-10 h-10 bg-green-500 border rounded-3xl border-green-500"
       title="Добавить поручение"
     >
       <Link to={`./${link}`}>

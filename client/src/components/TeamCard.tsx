@@ -2,16 +2,14 @@ import {Link} from "react-router-dom";
 
 interface TeamCardProps {
   id: number,
-  name: string,
   description: string
   workersAmount: number
 }
 
-function TeamCard({id, name, description, workersAmount}: TeamCardProps) {
+function TeamCard({id, description, workersAmount}: TeamCardProps) {
   return (
-    <div className="w-2/5 p-6 rounded-lg shadow-xl bg-gray-800 mx-auto my-6">
-      <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">{name}</h5>
-      <p className="mb-3 font-normal text-md text-gray-700 dark:text-gray-400 text-justify">{description}</p>
+    <div className="px-4 bg-gray-800 mx-auto">
+      <p className="mb-0.5 font-normal text-md text-gray-700 dark:text-gray-400 text-justify">{description}</p>
       <p className="mb-3 font-normal text-md text-gray-700 dark:text-gray-400">Число участников: {workersAmount}</p>
       <Link
         to={`./${id}`}
