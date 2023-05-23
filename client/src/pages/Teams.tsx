@@ -31,9 +31,9 @@ function Teams() {
     <div className="pt-20 bg-gray-700">
       {auth.type === 2 && <AddNewButton link="create"/>}
       <h1 className="text-center text-white text-3xl pb-3 font-semibold">Команды</h1>
-      <div className="bg-gray-800 max-w-xl mx-auto rounded-xl border shadow-xl">
+      {teams.length > 0 && <div className="bg-gray-800 max-w-xl mx-auto rounded-xl border shadow-xl">
         {teams.map((team: any) =>
-          <FieldSet text={team.name}>
+          <FieldSet text={team.name} key={team.id}>
             <TeamCard
               key={team.id}
               id={team.id}
@@ -42,7 +42,7 @@ function Teams() {
             />
           </FieldSet>
         )}
-      </div>
+      </div>}
     </div>
   )
 }

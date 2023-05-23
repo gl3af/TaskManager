@@ -1,7 +1,12 @@
-const Task = require('../models/Task')
-const User = require('../models/User')
-const Team = require('../models/Team')
+const Task = require('../models/task.model')
+const User = require('../models/user.model')
+const Team = require('../models/team.model')
+const Card = require('../models/card.model')
+const Document = require('../models/document.model')
+
 const {getTaskId} = require("./id.helpers");
+const {getUserBy_Id} = require("./user.helpers");
+const {createNotification} = require("./notification.helpers");
 
 const getTasks = async (team) => {
   let tasks = []
@@ -14,7 +19,7 @@ const getTasks = async (team) => {
   return tasks
 }
 
-const calculateDeadline = async (deadline) => {
+const calculateDeadline = (deadline) => {
   let date
   if (!deadline) {
     const current_date = new Date()
@@ -50,19 +55,8 @@ const getGivenTasks = async (manager) => {
 }
 
 const getUserTasks = async (user) => {
-  let tasksIC = []
-  let tasksExecutor = []
-  const teamsIC = await Team.find({IC: user})
-  for (let team of teamsIC) {
-    const teamTasks = getTasks(team)
-    tasksIC.push({team: team.name, tasks: teamTasks})
-  }
-
-  const teamsExecutor = await Team.find({IC: user})
-  for (let team of teamsExecutor) {
-    const teamTasks = getTasks(team)
-    tasksExecutor.push({team: team.name, tasks: teamTasks})
-  }
+  const tasksIC = await Task.find({IC: user})
+  const tasksExecutor = await Task.find({executor: user})
   return [tasksIC, tasksExecutor]
 }
 
@@ -100,6 +94,33 @@ const updateParentTasksStatuses = async (task, status) => {
   }
 }
 
+const updateParents = async (task) => {
+  let parent = task
+  while (parent.parentTask) {
+    parent = await Task.findOne({_id: parent.parentTask})
+
+    if (await childrenDone(parent)) {
+      parent.status = 'Выполнено'
+      await parent.save()
+
+      if (parent.parentTask === null) { // Создана руководителем
+        const team = await getTaskTeam(parent)
+        const manager = await getUserBy_Id(team.manager)
+        await createNotification(`Задача ${parent.name} выполнена!`, task, manager)
+      }
+    }
+  }
+}
+
+const childrenDone = async (task) => {
+  for (let _id of task.subTasks) {
+    const task = await Task.findOne({_id})
+    if (task.status !== 'Выполнено')
+      return false
+  }
+  return true
+}
+
 const getParentTask = async (task) => {
   let parent = task
   while (parent.parentTask) {
@@ -114,7 +135,7 @@ const getTaskTeam = async (task) => {
 
 const addTaskExecutor = async (task, executor) => {
   task.executor = executor
-  task.status = "Исполняется"
+  task.status = "Передано исполнителю"
   await task.save()
 }
 
@@ -134,7 +155,30 @@ const createSubtask = async (name, description, deadline, parentTask, IC) => {
   await parentTask.save()
 }
 
+const linkCard = async (task, card) => {
+  task.card = card
+  await task.save()
+}
+
+const getCardInfo = async (_id) => {
+  const documents = []
+  const card = await Card.findOne({_id})
+  if (!card) {
+    return {}
+  }
+  for (let _id of card.documents) {
+    const document = await Document.findOne({_id})
+    documents.push(document)
+  }
+  return {
+    created: card.created,
+    description: card.description,
+    documents
+  }
+}
+
 module.exports = {
+  getCardInfo,
   getTasks,
   calculateDeadline,
   createTask,
@@ -148,5 +192,7 @@ module.exports = {
   getParentTask,
   getTaskTeam,
   addTaskExecutor,
-  createSubtask
+  createSubtask,
+  linkCard,
+  updateParents
 }

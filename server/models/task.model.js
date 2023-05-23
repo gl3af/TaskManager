@@ -9,7 +9,8 @@ const schema = new Schema({
   parentTask: {type: Types.ObjectId, ref: 'Task'},
   subTasks: [{type: Types.ObjectId, ref: 'Task'}],
   status: {type: String, required: true},
-  deadline: {type: Date, required: true}
+  deadline: {type: Date, required: true},
+  card: {type: Types.ObjectId, ref: 'Card'}
 })
 
 module.exports = model('Task', schema)

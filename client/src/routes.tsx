@@ -12,6 +12,7 @@ import TaskPage from "./pages/TaskPage";
 import CreateSubtask from "./pages/CreateSubtask";
 import AddExecutor from "./pages/AddExecutor";
 import Notifications from "./pages/Notifications";
+import CreateCard from "./pages/CreateCard";
 
 export const useRoutes = (logged: boolean) => {
   if (logged) {
@@ -19,7 +20,6 @@ export const useRoutes = (logged: boolean) => {
       <Routes>
         <Route path="/">
           <Route index element={<Home/>}/>
-
           <Route path="teams/">
             <Route index element={<Teams/>}/>
             <Route path="create" element={<CreateTeam />}/>
@@ -28,14 +28,12 @@ export const useRoutes = (logged: boolean) => {
               <Route path="tasks/create" element={<CreateTask/>}/>
             </Route>
           </Route>
-
           <Route path="tasks/">
-            <Route index element={<Teams/>}/>
             <Route path=":id" element={<TaskPage />}/>
             <Route path=":id/subtasks/create" element={<CreateSubtask />}/>
             <Route path=":id/add-executor" element={<AddExecutor />}/>
+            <Route path=":id/create-card" element={<CreateCard />}/>
           </Route>
-
           <Route path="/notifications" element={<Notifications/>}/>
           <Route path="*" element={<NoPage/>}/>
         </Route>

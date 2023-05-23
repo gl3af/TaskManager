@@ -55,7 +55,7 @@ const AddExecutor = () => {
           Назначение исполнителя
         </h1>
         <div className="w-full max-w-2xl mx-auto py-4">
-          <form className="bg-gray-700 shadow-md rounded-xl px-8 pt-12 pb-8 mt-2">
+          <form className="bg-gray-800 shadow-md rounded-xl px-8 pt-12 pb-8 mt-2">
             <div className="flex flex-col justify-center items-center">
               <select
                 name="workers_list"
@@ -73,7 +73,7 @@ const AddExecutor = () => {
                 type="button"
                 onClick={createHandler}
               >
-                Добавить
+                Назначить
               </button>
             </div>
           </form>

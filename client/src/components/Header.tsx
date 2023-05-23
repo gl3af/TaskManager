@@ -15,7 +15,7 @@ function Header() {
         setHasNew(notifications.length > 0)
       }
     }
-    const interval = setInterval(() => fetch(), 500)
+    const interval = setInterval(() => fetch(), 200)
 
     return () => clearInterval(interval)
   }, [request, auth.username])
@@ -30,12 +30,11 @@ function Header() {
   const linkStyle = "text-md font-semibold leading-6 text-white"
 
   return (
-    <header className="bg-gray-900 fixed w-screen">
+    <header className="bg-gray-900 fixed w-screen z-10">
       <nav className="mx-auto flex max-w-6xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="hidden lg:flex lg:gap-x-12">
-          <Link to="/" className={linkStyle}>Главная</Link>
+          <Link to="/" className={linkStyle}>Мои задачи</Link>
           <Link to="/teams" className={linkStyle}>Команды</Link>
-          <Link to="/tasks" className={linkStyle}>Задачи</Link>
         </div>
         <div className="hidden lg:flex lg:gap-x-12 lg:flex-1 lg:justify-end">
           {auth.logged && <Link

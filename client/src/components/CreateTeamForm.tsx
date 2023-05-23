@@ -36,7 +36,7 @@ function CreateTeamForm(
   }
 
   return (
-    <form className="bg-gray-700 shadow-md rounded-xl px-8 pt-12 pb-8">
+    <form className="bg-gray-800 shadow-md rounded-xl px-8 pt-12 pb-8">
       { inputs.map(item =>
         <InputField key={item.id} id={item.id} type={item.type} name={item.name} refs={refs}/>)
       }
@@ -44,7 +44,7 @@ function CreateTeamForm(
         <h1 className="text-white font-semibold">Сотрудники: </h1>
         <div className="flex flex-col items-center justify-center">
           {selectedOptions.map(x =>
-            <div className="relative w-1/2 rounded-md bg-gray-800 mb-2 h-[26px] items-center" key={x.id}>
+            <div className="relative w-1/2 rounded-md bg-gray-900 mb-2 h-[26px] items-center" key={x.id}>
               <p className="text-center text-white absolute left-0 right-0">{x.name}</p>
               <button
                 className="text-center text-red-600 font-semibold absolute right-1 after:content-['\00d7']"

@@ -1,6 +1,6 @@
 const {getTaskById} = require("../helpers/task.helpers");
 const actions = require("../services/task.services");
-const {getUserById} = require("../helpers/user.helpers");
+const {addCard} = require("../helpers/card.helpers");
 
 const getAll = async (req, res) => {
   try {
@@ -78,7 +78,29 @@ const createSubtask = async (req, res) => {
   }
 }
 
+const createCard = async (req, res) => {
+  try {
+    const {description, documents} = req.body
+    const id = req.params.id
+    await actions.finishTask(id, description, documents)
+    res.status(200).json({message: "Карточка исполнения добавлена"})
+  } catch (e) {
+    console.log(e)
+    res.send({status: 500, message: 'Что-то пошло не так, попробуйте снова'})
+  }
+}
+
+const getTaskCard = async (req, res) => {
+  try {
+    const id = req.params.id
+    const card = await actions.getCard(id)
+    res.status(200).json(card)
+  } catch (e) {
+    console.log(e)
+    res.send({status: 500, message: 'Что-то пошло не так, попробуйте снова'})
+  }
+}
 
 module.exports = {
-  getById, getAll, getSubtasks, addExecutor, accept, getWorkers, createSubtask,
+  getById, getAll, getSubtasks, addExecutor, accept, getWorkers, createSubtask, createCard, getTaskCard
 }

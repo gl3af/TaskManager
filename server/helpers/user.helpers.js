@@ -1,4 +1,4 @@
-const User = require("../models/User")
+const User = require("../models/user.model")
 const {getUserId} = require("./id.helpers");
 const {sign} = require("jsonwebtoken");
 const config = require("config");

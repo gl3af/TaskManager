@@ -1,9 +1,10 @@
 const {getUnread, getNotifications, read} = require('../helpers/notification.helpers')
+const {getTaskBy_Id} = require("../helpers/task.helpers");
 
 const getNewNotifications = async (req, res) => {
   try {
     const username = req.params.username
-    const notifications = getUnread(username)
+    const notifications = await getUnread(username)
     res.status(200).json(notifications)
   } catch (e) {
     console.log(e)
@@ -14,7 +15,7 @@ const getNewNotifications = async (req, res) => {
 const getAllNotifications = async (req, res) => {
   try {
     const username = req.params.username
-    const notifications = getNotifications(username)
+    const notifications = await getNotifications(username)
     res.status(200).json(notifications)
   } catch (e) {
     console.log(e)

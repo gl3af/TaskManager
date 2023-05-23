@@ -7,6 +7,7 @@ import Loader from "../components/Loader"
 import AddExecutorButton from "../components/AddExecutorButton";
 import TaskCard from "../components/TaskCard";
 import FieldSet from "../components/FieldSet";
+import MIME from "../data/MIME.json"
 
 function TaskPage() {
   const {id} = useParams()
@@ -18,6 +19,7 @@ function TaskPage() {
   const [subtasks, setSubtasks] = useState<any[]>([])
   const [IC, setIC] = useState<any>()
   const [executor, setExecutor] = useState<any>()
+  const [card, setCard] = useState<any>()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,13 +36,17 @@ function TaskPage() {
       }
       const subtasks = await request(`/api/tasks/${task_id}/subtasks`, 'GET', {})
       setSubtasks(subtasks)
+      if (task.card) {
+        const card = await request(`/api/tasks/${task_id}/card`, 'GET', {})
+        setCard(card)
+      }
     }
 
     fetchData().catch(err => {
     })
 
     return setSubtasks([])
-  }, [request, id, auth.username])
+  }, [request, id])
 
   if (loading) {
     return <Loader/>
@@ -49,17 +55,29 @@ function TaskPage() {
   const isIC = IC?.username === auth?.username
   const isExecutor = executor?.username === auth?.username
   const buttonStyle = "text-white text-center border-green-500 py-2 px-4 rounded-md shadow-md bg-green-500 my-3"
+  const created = new Date(card?.created)
 
   const accept = async () => {
     const task_id: number = id ? +id : -1
-    window.location.reload()
     await request(`/api/tasks/${task_id}/accept`, 'PUT', {})
+    window.location.reload()
   }
 
-  const finish = async () => {
-    const task_id: number = id ? +id : -1
-    window.location.reload()
-    await request(`/api/tasks/${task_id}/accept`, 'PUT', {})
+  const loadFile = async (id: any, name: any) => {
+    const ext = name.split('.').reverse()[0]
+    // @ts-ignore
+    const type: string = MIME[ext]
+    const file = await fetch(`http://localhost:5000/api/files/${id}/`, {
+      headers: {'Content-Type': type}
+    })
+    const blob = await file.blob()
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = name
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
   }
 
   return (
@@ -95,17 +113,35 @@ function TaskPage() {
             )}
           </div>
         </FieldSet>}
+        {card && <FieldSet text={"Карточка исполнения"}>
+          <p className="text-white px-4 text-lg">{card.description}</p>
+          <p className="font-normal text-md text-gray-400 px-4">
+            Выполнено: {
+            [created.getDate(), created.getMonth() + 1, created.getFullYear()].join(".")
+          }
+          </p>
+          <div className="flex flex-col max-w-6xl mx-auto">
+            {card.documents.map((document: any) =>
+              <button
+                key={document._id}
+                className="mr-auto text-gray-400 px-4"
+                onClick={() => loadFile(document._id, document.name)}
+              >
+                {document.name}
+              </button>
+            )}
+          </div>
+        </FieldSet>}
         <div className="flex justify-center">
           {isExecutor && status === 'Передано исполнителю' &&
             <button
               className={buttonStyle}
               onClick={accept}
             >Принять задачу</button>}
-          {isExecutor && status === 'Принято к исполнению' &&
+          {isExecutor && status === 'Исполняется' &&
             <Link
-              to={"./cards/create"}
+              to={"./create-card"}
               className={buttonStyle}
-              onClick={finish}
             >Завершить задачу</Link>}
         </div>
       </div>

@@ -6,14 +6,17 @@ const path = require('path')
 const {urlencoded} = require("express");
 
 const app = express()
+
 app.use(cors());
 app.use(express.json({ extended: true }))
 app.use(urlencoded({ extended: true }))
+
 app.use('/api', require('./routes/auth.routes'))
 app.use('/api/users', require('./routes/users.routes'))
 app.use('/api/teams', require('./routes/teams.routes'))
 app.use('/api/tasks', require('./routes/tasks.routes'))
 app.use('/api/notifications', require('./routes/notifications.routes'))
+app.use('/api/files', require('./routes/files.routes'))
 
 const PORT = config.get('port')
 

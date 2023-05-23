@@ -1,6 +1,5 @@
 const actions = require('../services/auth.services')
 const {ValidationError} = require("../validators/user.validator");
-
 const login = async (req, res) => {
   try {
     const {username, password} = req.body

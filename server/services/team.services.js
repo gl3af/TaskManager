@@ -40,7 +40,7 @@ const addTask = async (team_id, name, description, deadline, ICId) => {
     throw new ValidationError('Ответственный не выбран')
   }
   const date = calculateDeadline(deadline)
-  const task = createTask(name, description, date, "Создано", IC)
+  const task = await createTask(name, description, date, "Создано", IC)
   await linkToTeam(team, task)
   await createNotification("Создано новое поручение!", task, IC)
 }

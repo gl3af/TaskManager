@@ -1,10 +1,27 @@
-const Notification = require("../models/Notification");
+const Notification = require("../models/notification.model");
 const {getNotificationId} = require("./id.helpers");
 const {getUserByUsername} = require("./user.helpers");
+const Task = require("../models/task.model")
 
-const getNotifications = async (userId, option) => {
-  const read = !!option
-  return Notification.find({ userId, read })
+const getNotifications = async (username, option) => {
+  const user = await getUserByUsername(username)
+  let notifications
+  let result = []
+  if (option) {
+    notifications = await Notification.find({userId: user, read: false})
+  } else {
+    notifications = await Notification.find({userId: user})
+  }
+  for (let notification of notifications) {
+    const task = await Task.findOne({_id: notification.taskId})
+    result.push({
+      id: notification.id,
+      taskId: task.id,
+      description: notification.description,
+      read: notification.read
+    })
+  }
+  return result
 }
 
 const createNotification = async (description, taskId, userId) => {
@@ -16,8 +33,7 @@ const createNotification = async (description, taskId, userId) => {
 }
 
 const getUnread = async (username) => {
-  const user = await getUserByUsername(username)
-  return getNotifications(user, 'unread')
+  return getNotifications(username, 'unread')
 }
 
 const read = async (id) => {

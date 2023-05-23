@@ -23,7 +23,7 @@ function CreateTaskForm({ refs, options, setICId, createHandler }: CreateTaskPro
   }
 
   return (
-    <form className="bg-gray-700 shadow-md rounded-xl px-8 pt-12 pb-8">
+    <form className="bg-gray-800 shadow-md rounded-xl px-8 pt-12 pb-8">
       { inputs.map(item =>
         <InputField key={item.id} id={item.id} type={item.type} name={item.name} refs={refs}/>)
       }

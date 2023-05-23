@@ -1,5 +1,5 @@
-const Team = require('../models/Team')
-const User = require("../models/User");
+const Team = require('../models/team.model')
+const User = require("../models/user.model");
 const {getUserBy_Id} = require("./user.helpers");
 const {getTeamId} = require("./id.helpers");
 
@@ -25,14 +25,14 @@ const getWorkers = async (team) => {
 }
 
 const linkToTeam = async (team, task) => {
-  team.tasksIds.push(task._id.toString())
+  team.tasksIds.push(task)
   await team.save()
 }
 
 const parseWorkers = async (workersIds) => {
   let workers = []
-  for (let id of workersIds) {
-    const worker = await User.findOne({ id })
+  for (let item of workersIds) {
+    const worker = await User.findOne({ id: item.id })
     workers.push(worker)
   }
   return workers

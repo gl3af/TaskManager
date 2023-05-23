@@ -8,11 +8,17 @@ router.get('/users/:username', taskController.getAll)
 // api/tasks/:id/
 router.get('/:id', taskController.getById)
 
+// api/tasks/:id/card
+router.get('/:id/card', taskController.getTaskCard)
+
 // api/tasks/:id/subtasks
 router.get('/:id/subtasks', taskController.getSubtasks)
 
 // api/tasks/:id/add-executor
 router.put('/:id/add-executor', taskController.addExecutor)
+
+// api/tasks/:id/add-executor
+router.post('/:id/create-card', taskController.createCard)
 
 // api/tasks/:id/accept
 router.put('/:id/accept', taskController.accept)

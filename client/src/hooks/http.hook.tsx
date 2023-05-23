@@ -6,7 +6,7 @@ const useHttp = () => {
   const [message, setMessage] = useState('')
 
   const request = useCallback(
-    async (url: string, method: string, body: {}) => {
+    async (url: string, method: string, body: {}, headers?: {}) => {
       axios.defaults.baseURL = 'http://localhost:5000'
 
       setLoading(true)
@@ -14,7 +14,8 @@ const useHttp = () => {
         const response = await axios({
           method: method,
           url: url,
-          data: body
+          data: body,
+          headers
         })
         const data = await response.data
         setMessage(data.message)

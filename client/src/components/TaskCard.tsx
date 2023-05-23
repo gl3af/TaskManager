@@ -17,7 +17,7 @@ function TaskCard({ id, name, deadline, status}: TaskCardProps) {
   }
 
   const left = difference(new Date(Date.now()), deadline)
-  const data = left > 0 ? `Осталось дней: ${left}` : "Просрочено"
+  const data = left >= 0 ? `Осталось дней: ${left}` : "Просрочено"
 
   return (
     <div className="px-4 bg-gray-800 relative pb-2">
